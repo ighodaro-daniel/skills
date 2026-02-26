@@ -11,7 +11,7 @@ Before scanning any code (unless `--fast` is set), read the full attack vector r
 ```
 references/attack-vectors.md
 ```
-It contains 52 attack vectors with precise detection patterns and false-positive signals. Use it as your scanning checklist for every file.
+It contains 49 attack vectors with precise detection patterns and false-positive signals. Use it as your scanning checklist for every file.
 
 ## Mode Selection
 
@@ -19,6 +19,7 @@ It contains 52 attack vectors with precise detection patterns and false-positive
 - **ALL**: scan all `.sol` files in the repo (exclude `lib/`, `out/`, `node_modules/`, `.git/`).
 - **`$filename`**: scan that specific file only.
 - **`--fast`** (optional flag, combinable with any mode): complete in under 1 minute. See Fast Mode below.
+- **`--confidence=N`** (optional, default `85`): minimum confidence score (0–100) a finding must reach to be reported. Lower values cast a wider net; higher values report only near-certain issues. Example: `--confidence=70` for a broad sweep, `--confidence=95` for a tight, high-signal report.
 
 ## Fast Mode
 
@@ -51,6 +52,28 @@ Matching rules:
 
 Report the count and entry names of skipped findings at the bottom of the Scope section.
 
+## Confidence Scoring
+
+Every finding that passes the false-positive checks is assigned a confidence score from 0 to 100 before being reported. Findings below the active threshold (default 85) are suppressed — not listed, but counted in the Scope section.
+
+**Scoring criteria:**
+
+| Score | Meaning |
+|---|---|
+| 90–100 | Detection pattern matches exactly. No FP signals apply. Clear, step-by-step attack path. Function is public/external and reachable without preconditions. Meaningful value at risk. |
+| 75–89 | Pattern matches clearly but a FP signal partially applies (e.g., CEI partially followed, guard present but incomplete). Attack requires some preconditions or specific state. |
+| 50–74 | Pattern matches but multiple FP signals partially reduce certainty. Requires elevated preconditions (specific role, multi-step setup, or low-probability state). Impact is limited. |
+| Below 50 | Theoretical match only. Should rarely be reached — the FP filter should have eliminated these. |
+
+**Scoring process:**
+1. Start at 100.
+2. For each FP signal from `attack-vectors.md` that partially applies, deduct 10–25 points depending on how strongly it mitigates the risk.
+3. If the attack path requires multiple non-trivial preconditions, deduct 10–15 points per additional step.
+4. If the value at risk is minimal (e.g., governance of an undeployed contract, dust amounts), deduct 10–20 points.
+5. If a prior finding in `assets/findings/` is closely related, deduct 5–10 points (known surface, partially addressed risk).
+
+Do not game the score upward to make a report look thorough. When in doubt, score lower and let the threshold filter decide.
+
 ## Context Loading
 
 Before scanning, load if present:
@@ -62,10 +85,12 @@ Before scanning, load if present:
 For each file in scope:
 
 1. Read the full file.
-2. Scan against all 52 vectors in `references/attack-vectors.md`. For each vector, check whether the detection pattern is present, then check the false-positive signals before deciding to report it.
-3. Before reporting a finding, check it against `false-positives.md` entries. Skip any that match.
-4. Only report findings where the detection pattern matches AND the false-positive conditions do not apply.
-5. Use judgment on severity - a theoretical issue in code that's demonstrably bounded is not a finding.
+2. Scan against all 49 vectors in `references/attack-vectors.md`. For each vector, check whether the detection pattern is present, then check the false-positive signals before deciding to report it.
+3. Check the finding against `false-positives.md` entries. Skip any that match.
+4. Only carry forward findings where the detection pattern matches AND the false-positive conditions do not fully apply.
+5. Assign a confidence score (0–100) per the Confidence Scoring section above.
+6. Suppress findings whose confidence score is below the active threshold (default 85; overridden by `--confidence=N`).
+7. Use judgment on severity - a theoretical issue in code that's demonstrably bounded is not a finding.
 
 Prioritize findings that are:
 - Directly exploitable with a concrete attack path
@@ -83,6 +108,7 @@ Prioritize findings that are:
 ## Findings
 
 ### [CRITICAL|HIGH|MEDIUM|LOW|INFO] Title
+- **Confidence:** N/100
 - **Location:** ContractName.functionName (line N)
 - **Vector:** <vector name from attack-vectors.md>
 - **Issue:** <what is wrong and why it matters>
@@ -91,8 +117,9 @@ Prioritize findings that are:
 - **Fix:** <concrete code-level recommendation>
 
 ## Scope
-<files reviewed, mode>
+<files reviewed, mode, confidence threshold in effect>
 False positives skipped: N (entry, ...)
+Below confidence threshold: N
 ```
 
 Order findings Critical first. Omit severity levels that have no findings.
