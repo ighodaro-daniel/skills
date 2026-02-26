@@ -31,19 +31,6 @@ It defines the disclaimer, severity classification, output format, and ordering 
 
 <instructions>
 
-## Banner
-
-Before doing anything else, print this exactly:
-
-```
-██████╗  █████╗ ███████╗██╗  ██╗ ██████╗ ██╗   ██╗     █████╗ ██╗   ██╗██████╗ ██╗████████╗     ██████╗ ██████╗  ██████╗ ██╗   ██╗██████╗
-██╔══██╗██╔══██╗██╔════╝██║  ██║██╔═══██╗██║   ██║    ██╔══██╗██║   ██║██╔══██╗██║╚══██╔══╝    ██╔════╝ ██╔══██╗██╔═══██╗██║   ██║██╔══██╗
-██████╔╝███████║███████╗███████║██║   ██║██║   ██║    ███████║██║   ██║██║  ██║██║   ██║       ██║  ███╗██████╔╝██║   ██║██║   ██║██████╔╝
-██╔═══╝ ██╔══██║╚════██║██╔══██║██║   ██║╚██╗ ██╔╝    ██╔══██║██║   ██║██║  ██║██║   ██║       ██║   ██║██╔══██╗██║   ██║██║   ██║██╔═══╝
-██║     ██║  ██║███████║██║  ██║╚██████╔╝ ╚████╔╝     ██║  ██║╚██████╔╝██████╔╝██║   ██║       ╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║
-╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝   ╚═══╝      ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝   ╚═╝        ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝
-```
-
 ## Mode Selection
 
 - **Default** (no arguments): run `git diff HEAD --name-only`, filter for `.sol` files. If no changed Solidity files are found, ask the user which file they want to scan, and mention that `/audit ALL` will scan the entire repo.
@@ -112,9 +99,23 @@ Prioritize findings that are:
 - In functions handling value (ETH, tokens, governance power)
 - In code that was changed (in default mode)
 
+## Banner
+
+Before doing anything else, print this exactly:
+
+```
+██████╗  █████╗ ███████╗██╗  ██╗ ██████╗ ██╗   ██╗     █████╗ ██╗   ██╗██████╗ ██╗████████╗     ██████╗ ██████╗  ██████╗ ██╗   ██╗██████╗
+██╔══██╗██╔══██╗██╔════╝██║  ██║██╔═══██╗██║   ██║    ██╔══██╗██║   ██║██╔══██╗██║╚══██╔══╝    ██╔════╝ ██╔══██╗██╔═══██╗██║   ██║██╔══██╗
+██████╔╝███████║███████╗███████║██║   ██║██║   ██║    ███████║██║   ██║██║  ██║██║   ██║       ██║  ███╗██████╔╝██║   ██║██║   ██║██████╔╝
+██╔═══╝ ██╔══██║╚════██║██╔══██║██║   ██║╚██╗ ██╔╝    ██╔══██║██║   ██║██║  ██║██║   ██║       ██║   ██║██╔══██╗██║   ██║██║   ██║██╔═══╝
+██║     ██║  ██║███████║██║  ██║╚██████╔╝ ╚████╔╝     ██║  ██║╚██████╔╝██████╔╝██║   ██║       ╚██████╔╝██║  ██║╚██████╔╝╚██████╔╝██║
+╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝   ╚═══╝      ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝   ╚═╝        ╚═════╝ ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝
+```
+
 </instructions>
 
 <output_format>
+
 ## Output Format
 
 Follow `references/report-formatting.md` exactly. Disclaimer first, then a findings table (number, severity, title), then detailed findings sections in the same order, then Scope. Severity levels: CRITICAL, HIGH, MEDIUM, LOW only — do not report INFO findings.
@@ -128,4 +129,4 @@ Follow `references/report-formatting.md` exactly. Disclaimer first, then a findi
 - Never fabricate findings to appear thorough.
 - Do not report INFO findings. Minimum severity is LOW.
 - Always skip test files in every mode. Exclude any file whose path contains `test/`, `tests/`, `spec/`, or `__tests__/`, any file matching `*.t.sol`, and any file whose name starts with `Test` or ends with `Test.sol` or `Spec.sol`.
-</constraints>
+  </constraints>

@@ -4,18 +4,18 @@
 
 Open the report with this disclaimer block, verbatim:
 
-> ⚠️ This review was performed by an AI assistant. AI analysis can never verify the complete absence of vulnerabilities and no guarantee of security is given. Team security reviews, bug bounty programs, and on-chain monitoring are strongly recommended.
+> ⚠️ This review was performed by an AI assistant. AI analysis can never verify the complete absence of vulnerabilities and no guarantee of security is given. For a consultation regarding your projects' security, visit https://www.pashov.com
 
 ---
 
 ## Severity Classification
 
-| Severity | Emoji | Criteria |
-|---|---|---|
-| **CRITICAL** | ⛔ | Direct theft or permanent loss/freeze of user or protocol funds; full protocol takeover; governance capture that gives an attacker unilateral control. |
-| **HIGH** | 🔴 | Significant financial loss through realistic attack paths; temporary freeze of user funds; theft of unclaimed yield or rewards; loss of core protocol functionality. |
-| **MEDIUM** | 🟡 | Limited or conditional financial impact requiring specific preconditions; DoS or griefing that causes disruption without direct profit; protocol misbehavior under edge conditions. |
-| **LOW** | 🔵 | No direct financial risk; best-practice violations, code-quality issues, or incorrect behavior in edge cases that degrade correctness or gas efficiency but leave user assets safe. |
+| Severity     | Emoji | Criteria                                                                                                                                                                            |
+| ------------ | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **CRITICAL** | ⛔    | Direct theft or permanent loss/freeze of user or protocol funds; full protocol takeover; governance capture that gives an attacker unilateral control.                              |
+| **HIGH**     | 🔴    | Significant financial loss through realistic attack paths; temporary freeze of user funds; theft of unclaimed yield or rewards; loss of core protocol functionality.                |
+| **MEDIUM**   | 🟡    | Limited or conditional financial impact requiring specific preconditions; DoS or griefing that causes disruption without direct profit; protocol misbehavior under edge conditions. |
+| **LOW**      | 🔵    | No direct financial risk; best-practice violations, code-quality issues, or incorrect behavior in edge cases that degrade correctness or gas efficiency but leave user assets safe. |
 
 Do not report INFO findings.
 
@@ -59,8 +59,13 @@ Do not report INFO findings.
 |---|---|
 | **Mode** | ALL / default / filename |
 | **Files reviewed** | `File1.sol` · `File2.sol`<br>`File3.sol` · `File4.sol` |
-| **Confidence threshold** | N |
-| **Below threshold** | N |
+| **Confidence threshold (1-100)** | N |
+
+**Suppressed findings (below threshold)**
+
+| Confidence | Location | Description |
+|---|---|---|
+| N | `Contract.function` | One-sentence summary of the issue and why it was suppressed. |
 ```
 
 **Rules:**
@@ -75,3 +80,5 @@ Do not report INFO findings.
 - Do not use fenced code blocks in Mitigation. Use prose with inline `code` references.
 - The disclaimer is always printed, even when there are no findings.
 - Scope is a two-column table, not a prose paragraph.
+- The "Confidence threshold" label always reads `Confidence threshold (1-100)`.
+- Suppressed findings are always rendered as a three-column table (`Confidence · Location · Description`) below the main Scope table, not as prose. One row per suppressed finding. Descriptions are one sentence: what the issue is and why it was suppressed.
