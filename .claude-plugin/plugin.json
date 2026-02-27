@@ -1,0 +1,12 @@
+{
+  "name": "pashov-skills",
+  "version": "1.0.0",
+  "description": "Community library of AI skills for Solidity security and development",
+  "author": {
+    "name": "pashov"
+  },
+  "repository": "https://github.com/pashov/skills",
+  "license": "MIT",
+  "keywords": ["solidity", "security", "audit", "ethereum"],
+  "skills": "./skills/"
+}
