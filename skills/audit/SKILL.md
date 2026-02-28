@@ -107,6 +107,24 @@ After planning, load if present:
   - Raise your confidence on findings that contradict documented intent
   - Lower confidence (or suppress) findings that are explicitly acknowledged as acceptable tradeoffs in the docs
 
+## Severity Assignment
+
+After assigning confidence, assign severity per `references/report-formatting.md`. Then apply these downgrade rules before finalizing:
+
+- **Privileged caller required** (owner, admin, multisig, governance) → drop one level.
+- **Impact is self-contained** (affects only the attacker's own funds, a specific unreachable state, or a narrow subset of users with no spillover) → drop one level.
+- **No direct monetary loss** (disruption, incorrect state, griefing, gas waste, but no fund drain) → cap at MEDIUM.
+- **Attack path is incomplete** (you cannot write caller → call sequence → concrete outcome) → drop one level.
+- **When uncertain between two levels** → always choose the lower.
+
+CRITICAL and HIGH are rare. Most findings in production Solidity land at MEDIUM or LOW. If your draft report has more than one CRITICAL or HIGH, re-examine each before finalizing — the bar is a complete, end-to-end exploit with meaningful value at risk and no significant preconditions.
+
+Prioritize findings that are:
+
+- Directly exploitable with a concrete attack path
+- In functions handling value (ETH, tokens, governance power)
+- In code that was changed (in default mode)
+
 ## Parallel Agent Orchestration
 
 After loading context and determining the final list of in-scope files, launch **5 parallel worker agents** that perform the scanning simultaneously.
@@ -149,12 +167,14 @@ You are an adversarial Solidity security researcher. Scan the assigned smart con
 3. Scan against every attack vector in the loaded reference files. Check the detection pattern, then check false-positive signals before deciding to report.
 4. Only carry forward a finding if the detection pattern matches AND false-positive conditions do not fully apply.
 5. Assign a confidence score (0–100) per the scoring rules in attack-vectors.md. Suppress findings below [active threshold, default 80].
-6. Apply severity downgrade rules:
-   - Privileged caller required → drop one level
-   - Impact is self-contained → drop one level
-   - No direct monetary loss → cap at MEDIUM
-   - Attack path is incomplete → drop one level
-   - Uncertain between two levels → choose lower
+6. Apply severity downgrade rules before finalizing each finding:
+   - **Privileged caller required** (owner, admin, multisig, governance) → drop one level.
+   - **Impact is self-contained** (affects only the attacker's own funds, a specific unreachable state, or a narrow subset of users with no spillover) → drop one level.
+   - **No direct monetary loss** (disruption, incorrect state, griefing, gas waste, but no fund drain) → cap at MEDIUM.
+   - **Attack path is incomplete** (you cannot write caller → call sequence → concrete outcome) → drop one level.
+   - **When uncertain between two levels** → always choose the lower.
+
+   CRITICAL and HIGH are rare. Most findings in production Solidity land at MEDIUM or LOW. If your draft findings include more than one CRITICAL or HIGH, re-examine each before returning — the bar is a complete, end-to-end exploit with meaningful value at risk and no significant preconditions.
 
 ## Return format — use this exact structure for each finding
 
@@ -183,7 +203,7 @@ Wait for all agents to complete. Collect every `FINDING` and `SUPPRESSED` block 
 
 ### Step 4 — Deduplicate
 
-Run a deduplication pass over all collected findings. If you are Claude, delegate this step to `claude-haiku` for speed.
+Run a deduplication pass over all collected findings.
 
 For each pair of findings, assign a similarity score (0–100) based on root cause and affected code:
 
