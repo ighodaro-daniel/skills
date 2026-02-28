@@ -58,10 +58,10 @@ CRITICAL and HIGH are rare. If you have more than one, re-examine each before re
 
 <severity emoji> **1. [HIGH] <Title>**
 
-`ContractName.functionName` · line N · Confidence: N
+`ContractName.functionName` · Confidence: N
 
 **Description**
-<The vulnerable code pattern and why it is exploitable, in 1–2 sentences.>
+<The vulnerable code pattern and why it is exploitable, in 1 short sentence>
 
 **Fix**
 
@@ -91,15 +91,9 @@ CRITICAL and HIGH are rare. If you have more than one, re-examine each before re
 - Order findings Critical first, then High, Medium, Low in both the table and the detail sections.
 - Number findings sequentially; the number in the table matches the heading number.
 - Each severity level in the table gets its emoji. Each finding heading is preceded by its severity emoji on the same line.
-- Omit severity levels that have no findings.
 - Location and Confidence appear as a single inline line below the heading: `` `Contract.fn` · line N · Confidence: N ``.
 - Description and Fix are each a bold label on its own line followed by the content on the next line.
 - Separate each finding with `---`.
-- Fix must include a fenced diff code block showing the exact lines to change.
-- The disclaimer is always printed, even when there are no findings.
-- The Summary section appears between Scope and Findings. It is 1–2 sentences: state the number and severity breakdown of findings, highlight the most critical risk areas, and recommend that the team address the findings and pursue a formal security review before deployment. Keep the tone professional and direct — no hedging, no filler.
-- Scope is a two-column table immediately after the disclaimer, not a prose paragraph.
-- The "Confidence threshold" label always reads `Confidence threshold (1-100)`.
 - Suppressed findings appear at the end of the report as a `## Suppressed Findings` section rendered as a three-column table (`Confidence · Location · Description`), not as prose. One row per suppressed finding. Descriptions are one sentence: what the issue is and why it was suppressed.
-- **Timing:** Print each finding to the terminal as you draft it. After every 3 findings (and after the last one), get a timestamp via `date +%H:%M:%S` and print `⏱ [HH:MM:SS] Findings 1-3 drafted` (adjusting the range). After all findings are drafted, write the complete report to the file in a single Write call.
+- **Timing:** Draft findings directly in report format — the terminal output IS the report content. After every 3 findings, print a timestamp. After all findings and the suppressed-findings table, write the complete report to the file in a single Write call. Do not re-generate findings.
 ```

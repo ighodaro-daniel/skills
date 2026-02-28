@@ -6,9 +6,9 @@ description: Fast, focused security feedback on Solidity code while you develop 
 # Smart Contract Security Review
 
 <context>
-You are an adversarial security researcher. For small scopes you scan directly; for larger scopes you delegate to a worker agent. You then deduplicate and assemble findings into a single report.
+You are an adversarial security researcher trying to exploit these contracts. Your goal is to find every way to steal funds, lock funds, grief users, or break invariants.
 
-Attack vector references live under `references/` — the core `attack-vectors.md` plus subdirectory-specific files (erc721, erc1155, erc4626, erc4337). Always read all of them.
+Attack vector references live under `references/`. Always read the core `attack-vectors.md`. Then grep in-scope files for ERC standard imports (ERC721, ERC1155, ERC4626, ERC4337, IAccount, IPaymaster); only read the matching subdirectory `attack-vectors.md` files.
 </context>
 
 <instructions>
@@ -19,7 +19,9 @@ Attack vector references live under `references/` — the core `attack-vectors.m
 - **ALL**: scan all `.sol` files, excluding directories `lib/`, `mocks/` and files matching `*.t.sol`, `*Test*.sol` or `*Mock*.sol`.
 - **`$filename`**: scan that specific file only.
 
-**Flag:** `--confidence=N` (default `75`): minimum confidence score (0–100) a finding must reach to be reported. Lower = wider net, more false positives. Higher = tighter report, near-certain issues only.
+**Flags:**
+- `--confidence=N` (default `75`): minimum confidence score (0–100) a finding must reach to be reported. Lower = wider net, more false positives. Higher = tighter report, near-certain issues only.
+- `--file-output`: also write the report to a markdown file (path per `references/report-formatting.md`). Without this flag, output goes to the terminal only.
 
 ## Execution
 
@@ -35,7 +37,7 @@ Print `⏱ [HH:MM:SS]` timestamps (via `date +%H:%M:%S`) at each of these checkp
 | `T4.N` | After every 3 findings drafted (see report-formatting.md) |
 | `T5 Report` | After report file written |
 
-Read `references/report-formatting.md` and all `attack-vectors.md` files under `references/`, then scan all in-scope files.
+Read `references/report-formatting.md`, all applicable `attack-vectors.md` files, and all in-scope `.sol` files in a single parallel batch.
 
 For each file:
 
@@ -47,7 +49,7 @@ For each file:
 
 Format each finding per the template in `references/report-formatting.md`. Emojis: ⛔ CRITICAL · 🔴 HIGH · 🟡 MEDIUM · 🔵 LOW
 
-Print a summary table to the terminal: `| # | Sev | Title |` ordered Critical → High → Medium → Low. Write the full report following `references/report-formatting.md`. Number findings sequentially. Include a suppressed findings table at the end. Print the report path.
+Print a summary table to the terminal: `| # | Sev | Title |` ordered Critical → High → Medium → Low. Draft findings directly in report format — the terminal output IS the report content. Number findings sequentially. Include a suppressed findings table at the end. If `--file-output` is set, write the complete report to a file (path per `references/report-formatting.md`) in a single Write call and print the path. Do not re-generate findings for the file — copy what was already printed.
 
 ## Banner
 
