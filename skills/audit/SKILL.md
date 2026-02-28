@@ -126,7 +126,7 @@ Each agent reads the full `attack-vectors.md` but focuses deeply on its assigned
 
 ### Step 2 — Launch all 5 agents simultaneously
 
-Use the Agent tool to launch all active workers **in a single parallel call** (not sequentially). Each agent is `general-purpose` with `model: "sonnet"`. Sonnet is fast and capable enough for pattern-matching against attack vectors. The orchestrator (parent model) handles deduplication and report writing.
+Use the Agent tool to launch all active workers with `run_in_background: true` so they execute as true parallel background tasks. Each agent is `general-purpose` with `model: "sonnet"`. Issue all Agent calls in **one message**, each with `run_in_background: true`. Then wait for all to complete — you will be notified as each finishes. Do NOT launch them sequentially or wait for one before launching the next. The orchestrator (parent model) handles deduplication and report writing.
 
 After launching, print the agent assignment table to the terminal:
 
@@ -225,7 +225,7 @@ Wait for all agents. Collect every `FINDING` and `SUPPRESSED` block into one com
 
 ### Step 3.5 — Verify findings (Haiku)
 
-For each FINDING from Step 3, launch a parallel Haiku agent (`model: "haiku"`, `subagent_type: "general-purpose"`) to independently verify the issue. Launch all verification agents **in a single parallel call**.
+For each FINDING from Step 3, launch a Haiku agent (`model: "haiku"`, `subagent_type: "general-purpose"`, `run_in_background: true`) to independently verify the issue. Issue all verification Agent calls in **one message**, each with `run_in_background: true`. Then wait for all to complete.
 
 Each Haiku agent receives this prompt:
 
@@ -302,12 +302,12 @@ Before doing anything else, print this exactly:
 
 ```
 
-██████╗ █████╗ ███████╗██╗ ██╗ ██████╗ ██╗ ██╗ ███████╗██╗ ██╗██╗██╗ ██╗ ███████╗
-██╔══██╗██╔══██╗██╔════╝██║ ██║██╔═══██╗██║ ██║ ██╔════╝██║ ██╔╝██║██║ ██║ ██╔════╝
-██████╔╝███████║███████╗███████║██║ ██║██║ ██║ ███████╗█████╔╝ ██║██║ ██║ ███████╗
-██╔═══╝ ██╔══██║╚════██║██╔══██║██║ ██║╚██╗ ██╔╝ ╚════██║██╔═██╗ ██║██║ ██║ ╚════██║
-██║ ██║ ██║███████║██║ ██║╚██████╔╝ ╚████╔╝ ███████║██║ ██╗██║███████╗███████╗███████║
-╚═╝ ╚═╝ ╚═╝╚══════╝╚═╝ ╚═╝ ╚═════╝ ╚═══╝ ╚══════╝╚═╝ ╚═╝╚═╝╚══════╝╚══════╝╚══════╝
+██████╗  █████╗ ███████╗██╗  ██╗ ██████╗ ██╗   ██╗     ███████╗██╗  ██╗██╗██╗     ██╗     ███████╗
+██╔══██╗██╔══██╗██╔════╝██║  ██║██╔═══██╗██║   ██║     ██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝
+██████╔╝███████║███████╗███████║██║   ██║██║   ██║     ███████╗█████╔╝ ██║██║     ██║     ███████╗
+██╔═══╝ ██╔══██║╚════██║██╔══██║██║   ██║╚██╗ ██╔╝     ╚════██║██╔═██╗ ██║██║     ██║     ╚════██║
+██║     ██║  ██║███████║██║  ██║╚██████╔╝ ╚████╔╝      ███████║██║  ██╗██║███████╗███████╗███████║
+╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝   ╚═══╝       ╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝
 
 ```
 
