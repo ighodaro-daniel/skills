@@ -11,7 +11,7 @@ You are the orchestrator of a parallelized smart contract security review. Your 
 
 **Exclude pattern** (applies to all modes): skip directories `interfaces/`, `lib/`, `mocks/` and files matching `*.t.sol`, `*Test*.sol` or `*Mock*.sol`.
 
-- **Default** (no arguments): scan all `.sol` files using the exclude pattern.
+- **Default** (no arguments): scan all `.sol` files using the exclude pattern. Use Bash `find` (not Glob) to discover files.
 - **diff**: run `git diff HEAD --name-only`, filter for `.sol` files using the exclude pattern. If none found, ask the user which file to scan and mention that `/audit` scans the entire repo.
 - **deep**: same scope as default, but also spawns the adversarial reasoning agent (Agent 5). Use for thorough reviews. Slower and more costly.
 - **`$filename ...`**: scan the specified file(s) only.
@@ -22,13 +22,13 @@ You are the orchestrator of a parallelized smart contract security review. Your 
 
 ## Agent Spawning
 
-After file discovery, resolve the skill's reference directory: Glob for `**/references/attack-vectors-1.md` and extract the parent directory path from the match. Use this resolved path as a prefix for all reference file paths passed to agents.
+After file discovery, resolve the skill's reference directory: Glob for `**/references/attack-vectors/attack-vectors-1.md` and extract the `references/` directory path from the match (two levels up). Use this resolved path as a prefix for all reference file paths passed to agents.
 
 Spawn all agents in a single message as parallel foreground Agent tool calls (do NOT use `run_in_background`). Always spawn Agents 1–4. Only spawn Agent 5 when the mode is **DEEP**.
 
-**Agents 1–4** (vector scanning) — spawn with `model: "sonnet"` and `max_turns: 7`. Agent N receives the in-scope `.sol` file paths and the instruction: your reference directory is `{resolved_path}`. Read `{resolved_path}/vector-scan-agent.md` for your full instructions. Your vectors file is `{resolved_path}/attack-vectors-N.md`.
+**Agents 1–4** (vector scanning) — spawn with `model: "sonnet"` and `max_turns: 7`. Agent N receives the in-scope `.sol` file paths and the instruction: your reference directory is `{resolved_path}`. Read `{resolved_path}/agents/vector-scan-agent.md` for your full instructions. Your vectors file is `{resolved_path}/attack-vectors/attack-vectors-N.md`.
 
-**Agent 5** (adversarial reasoning) — spawn with `model: "opus"` and `max_turns: 7`. Receives the in-scope `.sol` file paths and the instruction: your reference directory is `{resolved_path}`. Read `{resolved_path}/adversarial-reasoning-agent.md` for your full instructions.
+**Agent 5** (adversarial reasoning) — spawn with `model: "opus"` and `max_turns: 7`. Receives the in-scope `.sol` file paths and the instruction: your reference directory is `{resolved_path}`. Read `{resolved_path}/agents/adversarial-reasoning-agent.md` for your full instructions.
 
 ## Deduplication & Reporting
 

@@ -8,7 +8,7 @@ You communicate results back ONLY through your final text response. Do not outpu
 
 ## Workflow
 
-1. Read all in-scope `.sol` files, plus `judging.md`, `report-formatting.md`, and your assigned `attack-vectors-N.md` from the reference directory provided in your prompt, in a single parallel batch. Do NOT read any file again after this step — work entirely from what you already read.
+1. Read all in-scope `.sol` files, plus `judging.md`, `report-formatting.md`, and your assigned `attack-vectors/attack-vectors-N.md` from the reference directory provided in your prompt, in a single parallel batch. Do NOT read any file again after this step — work entirely from what you already read.
 2. **Triage pass (fast).** Scan every vector's title and detection pattern against the code. Skip vectors whose patterns reference constructs absent from the codebase (e.g., ERC721, proxy, ERC4337). Output one line: `Surviving: V3, V16, V23, ...` — numbers only, no reasoning for skipped vectors.
 3. **Deep pass.** Only for surviving vectors. For each: decide in ONE sentence whether the pattern matches. If no match or FP conditions fully apply → move on (never reconsider). If match → apply the FP gate from `judging.md` immediately (three checks). If any check fails → drop and move on. Only if all three pass → confirm attack path in ≤2 intermediate calls, apply score deductions, and format the finding.
 4. Your final response message MUST contain every finding **already formatted per `report-formatting.md`** — indicator + bold numbered title, location · confidence line, **Description** with one-sentence explanation, and **Fix** with diff block (omit fix for findings below 80 confidence). Use placeholder sequential numbers (the main agent will re-number).
