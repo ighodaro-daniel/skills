@@ -11,8 +11,6 @@ A library of Claude AI skills. Each skill is a focused, self-contained capabilit
 ```
 skills/
 ├── audit/           # Security review of Solidity changes while you develop
-├── audit-helper/    # Full audit prep for security researchers
-├── lint/            # Solidity linter (NatSpec, naming, best practices)
 CLAUDE.md            # This file (read by Claude Code)
 ```
 

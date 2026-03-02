@@ -9,11 +9,9 @@
 
 ## Skills
 
-| Skill                                | Description                                                                    |
-| ------------------------------------ | ------------------------------------------------------------------------------ |
-| [audit](skills/audit/)               | Fast security feedback on Solidity changes while you develop (typically <5 min)|
-| [audit-helper](skills/audit-helper/) | Full audit prep — architecture, fund flows, integrations, and threat model     |
-| [lint](skills/lint/)                 | Lints Solidity — imports, NatSpec, naming, visibility, custom errors, and more |
+| Skill                  | Description                                                                    |
+| ---------------------- | ------------------------------------------------------------------------------ |
+| [audit](skills/audit/) | Fast security feedback on Solidity changes while you develop (typically <5 min)|
 
 ---
 
@@ -27,7 +25,7 @@ Works with Claude Code in **VS Code**, **Cursor**, and the terminal. Clone this 
 cp -r skills/audit ~/.claude/commands/
 ```
 
-The skill is then invocable as `/audit`. Replace `audit` with any skill name from the table above.
+The skill is then invocable as `/audit`.
 
 > **Tip:** Open a second terminal on the side, run `/audit` there, and keep coding in your main terminal. A typical run takes ~5 minutes.
 
