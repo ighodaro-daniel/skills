@@ -1,5 +1,7 @@
 # Project Docs
 
+**⚠️ Work in Progress — this feature is not ready yet.**
+
 Drop any context that helps the auditor understand what the protocol is supposed to do:
 
 - Design docs and specs

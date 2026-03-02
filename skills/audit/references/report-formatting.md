@@ -65,6 +65,6 @@ Save the report to `assets/findings/{project-name}-pashov-ai-audit-report-{times
 - Location and Confidence appear as a single inline line below the heading: `` `Contract.fn` · Confidence: N ``.
 - Description and Fix are each a bold label on its own line followed by the content on the next line.
 - Separate each finding with `---`.
-- Findings below the confidence threshold are listed in the table and get a detail section with description only — no **Fix** block. Draw a separator row `| | | **Below Confidence Threshold** |` between the last above-threshold finding and the first below-threshold finding.
+- Findings below the confidence threshold are listed in the table and get a detail section with description only — no **Fix** block. Draw a separator row `| **Below Confidence Threshold** |` between the last above-threshold finding and the first below-threshold finding.
 - **Timing:** Draft findings directly in report format — the terminal output IS the report content. After every 3 findings, print a timestamp. After all findings, write the complete report to the file in a single Write call. Do not re-generate findings.
 ```

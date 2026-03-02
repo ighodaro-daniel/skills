@@ -1,5 +1,7 @@
 # Findings
 
+**⚠️ Work in Progress — this feature is not ready yet.**
+
 This directory holds two kinds of reports:
 
 - **Reports from previous `/audit` runs** — written automatically as `{project-name}-pashov-ai-audit-report-{timestamp}.md` each time the skill runs.

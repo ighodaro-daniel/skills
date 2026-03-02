@@ -1,6 +1,6 @@
 ---
 name: audit
-description: Fast, focused security feedback on Solidity code while you develop - before you commit, not after an auditor does. Built for developers. Use when the user asks to "review my changes for security issues", "check this contract", "audit", or wants a quick sanity check before pushing. Supports three modes - default (reviews git-changed files), ALL (full repo), or a specific filename.
+description: Fast, focused security feedback on Solidity code while you develop - before you commit, not after an auditor does. Built for developers. Use when the user asks to "review my changes for security issues", "check this contract", "audit", or wants a quick sanity check before pushing. Supports modes - default (full repo), DIFF (git-changed files only), DEEP (full repo + adversarial reasoning), or a specific filename.
 ---
 
 # Smart Contract Security Review
@@ -11,14 +11,14 @@ You are the orchestrator of a parallelized smart contract security review. Your 
 
 **Exclude pattern** (applies to all modes): skip directories `interfaces/`, `lib/`, `mocks/` and files matching `*.t.sol`, `*Test*.sol` or `*Mock*.sol`.
 
-- **Default** (no arguments): run `git diff HEAD --name-only`, filter for `.sol` files using the exclude pattern. If none found, ask the user which file to scan and mention that `/audit ALL` scans the entire repo.
-- **ALL**: scan all `.sol` files using the exclude pattern.
-- **DEEP**: same scope as ALL, but also spawns the adversarial reasoning agent (Agent 4). Use for thorough reviews. Slower and more costly.
+- **Default** (no arguments): scan all `.sol` files using the exclude pattern.
+- **diff**: run `git diff HEAD --name-only`, filter for `.sol` files using the exclude pattern. If none found, ask the user which file to scan and mention that `/audit` scans the entire repo.
+- **deep**: same scope as default, but also spawns the adversarial reasoning agent (Agent 4). Use for thorough reviews. Slower and more costly.
 - **`$filename`**: scan that specific file only.
 
 **Flags:**
 
-- `--confidence=N` (default `80`): minimum confidence score (0–100) a finding must reach to be reported. Lower = wider net, more false positives. Higher = tighter report, near-certain issues only.
+- `--confidence=N` (default `75`): minimum confidence score (0–100) a finding must reach to be reported. Lower = wider net, more false positives. Higher = tighter report, near-certain issues only.
 - `--file-output` (off by default): also write the report to a markdown file (path per `references/report-formatting.md`). Without this flag, output goes to the terminal only. Never write a report file unless the user explicitly passes `--file-output`.
 
 ## Execution
