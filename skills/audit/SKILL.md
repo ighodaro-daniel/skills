@@ -13,7 +13,7 @@ You are the orchestrator of a parallelized smart contract security review. Your 
 
 - **Default** (no arguments): scan all `.sol` files using the exclude pattern.
 - **diff**: run `git diff HEAD --name-only`, filter for `.sol` files using the exclude pattern. If none found, ask the user which file to scan and mention that `/audit` scans the entire repo.
-- **deep**: same scope as default, but also spawns the adversarial reasoning agent (Agent 4). Use for thorough reviews. Slower and more costly.
+- **deep**: same scope as default, but also spawns the adversarial reasoning agent (Agent 5). Use for thorough reviews. Slower and more costly.
 - **`$filename`**: scan that specific file only.
 
 **Flags:**
@@ -23,7 +23,6 @@ You are the orchestrator of a parallelized smart contract security review. Your 
 
 ## Execution
 
-Print the model type you are using.
 Print `⏱ [HH:MM:SS]` timestamps (via `date +%H:%M:%S`) at each of these checkpoints:
 
 | Tag         | When                                                      |
@@ -38,11 +37,11 @@ After the report, print a **Timing** summary table showing each checkpoint's tim
 
 ## Agent Spawning
 
-After file discovery (T1), spawn agents in parallel using the Agent tool. Always spawn Agents 1–3. Only spawn Agent 4 when the mode is **DEEP**.
+After file discovery (T1), spawn agents in parallel using the Agent tool. Always spawn Agents 1–4. Only spawn Agent 5 when the mode is **DEEP**.
 
-**Agents 1–3** (vector scanning) — spawn with `model: "sonnet"` and `max_turns: 7`. Agent N receives the in-scope `.sol` file paths and the instruction: read `references/vector-scan-agent.md` for your full instructions. Your vectors file is `references/attack-vectors-N.md`.
+**Agents 1–4** (vector scanning) — spawn with `model: "sonnet"` and `max_turns: 7`. Agent N receives the in-scope `.sol` file paths and the instruction: read `references/vector-scan-agent.md` for your full instructions. Your vectors file is `references/attack-vectors-N.md`.
 
-**Agent 4** (adversarial reasoning) — spawn with `model: "Opus"` and `max_turns: 7`. Receives the in-scope `.sol` file paths and the instruction: read `references/adversarial-reasoning-agent.md` for your full instructions.
+**Agent 5** (adversarial reasoning) — spawn with `model: "Opus"` and `max_turns: 7`. Receives the in-scope `.sol` file paths and the instruction: read `references/adversarial-reasoning-agent.md` for your full instructions.
 
 ## Deduplication & Reporting
 
