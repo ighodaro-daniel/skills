@@ -12,7 +12,7 @@
 Works with the **Claude Code CLI**, the **VS Code Claude extension**, and **Cursor**. Run the following in your terminal:
 
 ```bash
-git clone https://github.com/pashov/skills.git && cp -r skills/solidity-auditor ~/.claude/commands/solidity-auditor
+git clone https://github.com/pashov/skills.git && mkdir -p ~/.claude/commands && cp -r skills/solidity-auditor ~/.claude/commands/solidity-auditor
 ```
 
 The skill is then invocable as `/solidity-auditor`. See the [skill README](solidity-auditor/README.md) for usage.
