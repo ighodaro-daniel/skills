@@ -17,6 +17,24 @@ git clone https://github.com/pashov/skills.git && mkdir -p ~/.claude/commands &&
 
 The skill is then invocable as `/solidity-auditor`. See the [skill README](solidity-auditor/README.md) for usage.
 
+### GitHub Copilot (VS Code)
+
+This repository also includes a Copilot-native skill at `.github/skills/solidity-auditor`.
+
+```bash
+git clone https://github.com/pashov/skills.git
+cd skills
+code .
+```
+
+Then in VS Code Chat with GitHub Copilot, run:
+
+```text
+/solidity-auditor
+/solidity-auditor deep
+/solidity-auditor src/Vault.sol --file-output
+```
+
 **Update to latest:** `cd` into the cloned `skills` repo and run:
 
 ```bash
